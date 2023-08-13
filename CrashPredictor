@@ -1,0 +1,28 @@
+import requests
+from bs4 import BeautifulSoup
+import time
+
+# URL du site 1xbet.cg
+url = "https://www.1xbet.cg/"
+
+# Fonction pour récupérer les multiplicateurs du jeu Crash
+def get_crash_multiplicators():
+    response = requests.get(url)
+  
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, "html.parser")
+        crash_data = soup.find("div", class_="crash-data")
+        multiplicators = crash_data.find_all("span", class_="multiplicator")
+        return multiplicators
+    else:
+        print("Erreur lors de la requête HTTP")
+        return []
+
+# Exécution du programme pendant 10 minutes
+start_time = time.time()
+end_time = start_time + 10 * 60
+
+while time.time() < end_time:
+    multiplicators = get_crash_multiplicators()
+    print("Multiplicateurs:", multiplicators)
+    time.sleep(1)
